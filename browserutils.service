@@ -1,0 +1,10 @@
+[Unit]
+Description=BrowserUtils API service
+After=network.target
+
+[Service]
+ExecStart=/home/rodrigo/Repos/BrowserUtils/BrowserUtils
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
