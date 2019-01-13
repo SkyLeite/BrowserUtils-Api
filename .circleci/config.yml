@@ -34,7 +34,7 @@ jobs:
           paths:
             - builds
 
-  public-github-release:
+  publish-github-release:
     docker:
       - image: circleci/golang:1.8
     steps:
