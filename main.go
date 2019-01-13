@@ -4,17 +4,30 @@ import (
 	"BrowserUtils/routes"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/urfave/cli"
 )
 
 func main() {
-	var router = mux.NewRouter()
+	app := cli.NewApp()
+	app.Name = "Browser Utils"
+	app.Version = "1.0"
 
-	router.HandleFunc("/about", routes.About).Methods("GET")
-	router.HandleFunc("/play/mpv", routes.RunWithMpv).Methods("POST")
-	router.HandleFunc("/youtubedl", routes.DownloadWithYoutubeDL).Methods("POST")
+	app.Action = func(c *cli.Context) error {
+		var router = mux.NewRouter()
 
-	log.Printf("Listening on port 36284")
-	log.Fatal(http.ListenAndServe(":36284", router))
+		router.HandleFunc("/about", routes.About).Methods("GET")
+		router.HandleFunc("/play/mpv", routes.RunWithMpv).Methods("POST")
+		router.HandleFunc("/youtubedl", routes.DownloadWithYoutubeDL).Methods("POST")
+
+		log.Printf("Listening on port 36284")
+		return http.ListenAndServe(":36284", router)
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
