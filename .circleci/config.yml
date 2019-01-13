@@ -19,7 +19,7 @@ jobs:
       - run:
           name: "Run gox"
           command: |
-            /go/bin/gox /go/src/BrowserUtils -output="/go/src/BrowserUtils/builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
+            /go/bin/gox . -output="/go/src/BrowserUtils/builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
       - store_artifacts:
           path: builds
