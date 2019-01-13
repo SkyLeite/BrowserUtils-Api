@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"os/exec"
+
+	"github.com/urfave/cli"
 )
 
 type mpvPostData struct {
@@ -15,29 +17,32 @@ type mpvPostData struct {
 	Geometry string
 }
 
-func RunWithMpv(w http.ResponseWriter, r *http.Request) {
-	bytes, _ := httputil.DumpRequest(r, true)
+func RunWithMpv(c *cli.Context) func(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println(string(bytes))
+	return func(w http.ResponseWriter, r *http.Request) {
+		bytes, _ := httputil.DumpRequest(r, true)
 
-	decoder := json.NewDecoder(r.Body)
-	var body mpvPostData
-	err := decoder.Decode(&body)
-	if err != nil {
-		panic(err)
+		fmt.Println(string(bytes))
+
+		decoder := json.NewDecoder(r.Body)
+		var body mpvPostData
+		err := decoder.Decode(&body)
+		if err != nil {
+			panic(err)
+		}
+
+		args := []string{body.URL}
+
+		if body.IsOnTop == true {
+			args = append(args, "--ontop")
+		}
+
+		if len(body.Geometry) > 0 {
+			args = append(args, fmt.Sprintf("--geometry=%s", body.Geometry))
+		}
+
+		exec.Command("mpv", args...).Start()
+
+		io.WriteString(w, "Done!")
 	}
-
-	args := []string{body.URL}
-
-	if body.IsOnTop == true {
-		args = append(args, "--ontop")
-	}
-
-	if len(body.Geometry) > 0 {
-		args = append(args, fmt.Sprintf("--geometry=%s", body.Geometry))
-	}
-
-	exec.Command("mpv", args...).Start()
-
-	io.WriteString(w, "Done!")
 }
