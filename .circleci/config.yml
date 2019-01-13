@@ -16,6 +16,11 @@ jobs:
           command: |
             go get -v -u github.com/gorilla/mux
 
+      - run
+          name: "Download cli"
+          command: |
+            go get -v -u github.com/urfave/cli
+
       - run:
           name: "Download gox"
           command: |
@@ -39,12 +44,12 @@ jobs:
       - image: circleci/golang:1.8
     steps:
       - attach_workspace:
-          at: ./go/src/{{repo_name}}
+          at: /go/src/BrowserUtils
       - run:
           name: "Publish Release on GitHub"
           command: |
             go get github.com/tcnksm/ghr
-            VERSION=$(my-binary --version)
+            VERSION=$(./builds/BrowserUtils_linux_amd64 --version)
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./builds/
 
 workflows:
