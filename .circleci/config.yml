@@ -16,7 +16,7 @@ jobs:
           command: |
             go get -v -u github.com/gorilla/mux
 
-      - run
+      - run:
           name: "Download cli"
           command: |
             go get -v -u github.com/urfave/cli
