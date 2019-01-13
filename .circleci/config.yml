@@ -1,0 +1,48 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.9
+
+    working_directory: /go/src/{{REPO_NAME}}
+    steps:
+      - checkout
+
+      # specify any bash command here prefixed with `run: `
+      - run: go get -v -u github.com/mitchellh/gox
+      - run: /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
+
+      - store_artifacts:
+        path: /builds
+      
+      - persist_to_workspace:
+        root: /go/src/{{REPO_NAME}}
+        paths:
+          - /builds
+
+  public-github-release:
+    docker:
+      - image: circleci/golang:1.8
+    steps:
+      - attach_workspace:
+          at: ./go/src/{{repo_name}}
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            go get github.com/tcnksm/ghr
+            VERSION=$(my-binary --version)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./builds/
+
+workflows:
+  main:
+    jobs:
+      - build:
+      - publish-github-release:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
