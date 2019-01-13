@@ -42,6 +42,7 @@ jobs:
   publish-github-release:
     docker:
       - image: circleci/golang:1.8
+    working_directory: /go/src/BrowserUtils
     steps:
       - attach_workspace:
           at: /go/src/BrowserUtils
