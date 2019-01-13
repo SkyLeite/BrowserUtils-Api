@@ -19,7 +19,7 @@ jobs:
       - run:
           name: "Run gox"
           command: |
-            gox . -output="./builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
+            gox -output="./builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
       - store_artifacts:
           path: builds
