@@ -14,12 +14,12 @@ jobs:
       - run:
           name: "Download gox"
           command: |
-          go get -v -u github.com/mitchellh/gox
+            go get -v -u github.com/mitchellh/gox
 
       - run:
           name: "Run gox"
           command: |
-          /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}""
+            /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}""
 
       - store_artifacts:
           path: /builds
