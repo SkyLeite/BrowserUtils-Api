@@ -1,6 +1,7 @@
 # BrowserUtils-API
 
-This is the API for BrowserUtils.
+This is the API for BrowserUtils. Default port is `36284`.
+Includes a basic systemd file, if you're like to run it as so.
 
 # Routes
 GET `/about/` - Returns version information
