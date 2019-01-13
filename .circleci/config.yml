@@ -12,22 +12,22 @@ jobs:
       - checkout
 
       - run:
-        name: "Download gox"
-        command: |
+          name: "Download gox"
+          command: |
           go get -v -u github.com/mitchellh/gox
 
       - run:
-        name: "Run gox"
-        command: |
-          /go/bin/gox -output='builds/{{.Dir}}_{{.OS}}_{{.Arch}}'
+          name: "Run gox"
+          command: |
+          /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}""
 
       - store_artifacts:
-        path: /builds
+          path: /builds
 
       - persist_to_workspace:
-        root: /go/src/{{REPO_NAME}}
-        paths:
-          - /builds
+          root: /go/src/{{REPO_NAME}}
+          paths:
+            - /builds
 
   public-github-release:
     docker:
