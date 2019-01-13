@@ -22,12 +22,12 @@ jobs:
             /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}""
 
       - store_artifacts:
-          path: /builds
+          path: builds
 
       - persist_to_workspace:
           root: /go/src/{{REPO_NAME}}
           paths:
-            - /builds
+            - builds
 
   public-github-release:
     docker:
