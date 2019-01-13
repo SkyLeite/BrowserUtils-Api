@@ -2,6 +2,7 @@ package main
 
 import (
 	"BrowserUtils/routes"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,9 +12,13 @@ import (
 )
 
 func main() {
+	cli.VersionPrinter = func(c *cli.Context) {
+		fmt.Printf("%s", c.App.Version)
+	}
+
 	app := cli.NewApp()
 	app.Name = "Browser Utils"
-	app.Version = "1.0"
+	app.Version = "v1.0"
 
 	app.Action = func(c *cli.Context) error {
 		var router = mux.NewRouter()
