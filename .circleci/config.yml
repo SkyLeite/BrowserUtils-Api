@@ -12,6 +12,11 @@ jobs:
       - checkout
 
       - run:
+          name: "Download mux"
+          command: |
+            go get -v -u github.com/gorilla/mux
+
+      - run:
           name: "Download gox"
           command: |
             go get -v -u github.com/mitchellh/gox
