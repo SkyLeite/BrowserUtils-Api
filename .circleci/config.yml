@@ -7,7 +7,7 @@ jobs:
     docker:
       - image: circleci/golang:1.9
 
-    working_directory: /go/src/{{REPO_NAME}}
+    working_directory: /go/src/BrowserUtils
     steps:
       - checkout
 
@@ -19,13 +19,13 @@ jobs:
       - run:
           name: "Run gox"
           command: |
-            /go/bin/gox -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
+            /go/bin/gox . -output="builds/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
       - store_artifacts:
           path: builds
 
       - persist_to_workspace:
-          root: /go/src/{{REPO_NAME}}
+          root: /go/src/BrowserUtils
           paths:
             - builds
 
