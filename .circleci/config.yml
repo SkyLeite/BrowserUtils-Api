@@ -47,7 +47,7 @@ jobs:
       - attach_workspace:
           at: /go/src/BrowserUtils
       - run:
-          name: "Publish Release on GitHub"
+          name: "Publish Release"
           command: |
             go get github.com/tcnksm/ghr
             echo -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete $(./builds/BrowserUtils_linux_amd64 --version) builds/
